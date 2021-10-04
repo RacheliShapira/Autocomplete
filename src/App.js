@@ -13,20 +13,27 @@ function App() {
   const searchOptions = (e) => {
     setSearchKey(e.target.value);
     console.log("setSearchKey", e.target.value);
+    
   };
 
   const submitButton = () => {
     console.log("submitted", searchKey);
+    setResults([]);
     Papa.parse(xlsxFile, {
       download: true,
       complete: function (papaResults) {
         const db = papaResults.data;
-        db.map((x, i) => {
-          var productTitle = db[i][0];
-          //if the key that was search appears in the title
-          if (productTitle.search(searchKey) >= 0) {
-            console.log(i, "mpapaResults", db[i][0]);
+        db.map((x, index) => {
+          //filtering  the headers from results
+          if (index>0){
+            var productTitle = db[index][0];
+            //if the key that was search appears in the title
+            if (productTitle.search(searchKey) >= 0) {
+              console.log(index, "mpapaResults", db[index][0]);
+              setResults(results=>[...results, db[index]])
+            }
           }
+         
         });
       },
     });
@@ -35,7 +42,7 @@ function App() {
   return (
     <div className="App">
       <SearchBar searchOptions={searchOptions} submitButton={submitButton} />
-      <ShowResults />
+      <ShowResults results={results} />
     </div>
   );
 }
