@@ -12,9 +12,19 @@ const ResultCard = (props) => {
           <img src={props.additional_image_link} />
         </div>
         <div className="productInfo">
-          <p>Price: {isSale ? "SALE!  " + props.sale_price : props.price}</p>
-          
-          <p> {props.gender}</p>
+          <p style={{ float: "left" }}>Price:</p>
+          <p
+            style={
+              isSale
+                ? { textDecoration: "line-through" }
+                : { visibility: "hidden" }
+            }
+          >
+            {props.price}
+          </p>
+          <p style={{ color: "brown" }}>{isSale ? "SALE!  " + props.sale_price : props.price}</p>
+         
+          <p style={{ fontSize: "small" }}> {props.gender}</p>
           <p className="sNumber"> {props.gtin}</p>
         </div>
       </div>
