@@ -11,14 +11,13 @@ function App() {
   const [results, setResults] = useState([]);
 
   const searchOptions = (e) => {
-    setSearchKey(e.target.value);
+    setSearchKey(e.target.value.toLowerCase());
     console.log("setSearchKey", e.target.value);
   };
 
   const checkImage = (src) => {
     var image = new Image();
     image.src = src;
-    console.log("image.width", image.width, image.src);
     if (image.width > 0) {
       return src;
     }
@@ -36,7 +35,7 @@ function App() {
         db.map((x, index) => {
           //filtering  the headers from results
           if (index > 0) {
-            var productTitle = db[index][0];
+            var productTitle = db[index][0].toLowerCase();
             //if the key that was search appears in the title
             if (productTitle.search(searchKey) >= 0) {
               // console.log(index, "mpapaResults", db[index]);
