@@ -1,5 +1,5 @@
 import xlsxFile from "./products.csv";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import Papa from "papaparse";
 
@@ -7,12 +7,39 @@ import SearchBar from "./SearchBar.js";
 import ShowResults from "./ShowResults.js";
 
 function App() {
+  // const [isLoading, setIsLoading] = useState(true)
   const [searchKey, setSearchKey] = useState();
+  const [isAutocomplete, setIsAutocomplete] = useState(false);
+  const [searchTitles, setSearchTitles] = useState([]);
   const [results, setResults] = useState([]);
 
   const searchOptions = (e) => {
-    setSearchKey(e.target.value.toLowerCase());
-    console.log("setSearchKey", e.target.value);
+    console.log(" e.target.value", e.target.value);
+    //reset isAutocomplete
+    setIsAutocomplete(false);
+    setSearchTitles([]);
+    //make sure seacrh key isn't empty
+
+    if (e.target.value.match(/^\s+$/) === null) {
+      let input = e.target.value.toLowerCase();
+      setSearchKey(input);
+      //auto compleate
+      Papa.parse(xlsxFile, {
+        download: true,
+        complete: function (papaResults) {
+          papaResults.data.map((x, index) => {
+            //pushing all the products titles to array for the search
+            if (index > 0) {
+              var title = papaResults.data[index][0].toLowerCase();
+              if (title.startsWith(input)) {
+                setIsAutocomplete(true);
+                setSearchTitles((searchTitles) => [...searchTitles, title]);
+              }
+            }
+          });
+        },
+      });
+    }
   };
 
   const checkImage = (src) => {
@@ -23,10 +50,10 @@ function App() {
     }
   };
 
-
-
   const submitButton = () => {
     console.log("submitted", searchKey);
+    //reset isAutocomplete
+    setIsAutocomplete(false);
     setResults([]); //emptying  the results array for the new search
     Papa.parse(xlsxFile, {
       download: true,
@@ -49,7 +76,12 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar searchOptions={searchOptions} submitButton={submitButton} />
+      <SearchBar
+        searchOptions={searchOptions}
+        submitButton={submitButton}
+        isAutocomplete={isAutocomplete}
+        searchTitles={searchTitles}
+      />
       <ShowResults results={results} checkImage={checkImage} />
     </div>
   );

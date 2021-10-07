@@ -1,6 +1,7 @@
 import ResultCard from "./ResultCard.js";
 
-const ShowResults = ({ results, checkImage }) => {
+
+const ShowResults = ({ results, checkImage , }) => {
   return (
     <div className="showResults">
       {results.map((result, index) => (
@@ -16,6 +17,7 @@ const ShowResults = ({ results, checkImage }) => {
           />
         </div>
       ))}
+      
     </div>
   );
 };
