@@ -12,6 +12,10 @@ function App() {
   const [isAutocomplete, setIsAutocomplete] = useState(false);
   const [searchTitles, setSearchTitles] = useState([]);
   const [results, setResults] = useState([]);
+  const [resultPages, setResultPages] = useState(0);
+  const maxResultsPerPage=100;
+  const [currentPage, setCurrentPage] = useState(1);
+  
 
   const searchOptions = (e) => {
     console.log(" e.target.value", e.target.value);
@@ -59,20 +63,32 @@ function App() {
       download: true,
       complete: function (papaResults) {
         const db = papaResults.data;
+        let resultsCount=0
         db.map((x, index) => {
           //filtering  the headers from results
           if (index > 0) {
+            
             var productTitle = db[index][0].toLowerCase();
             //if the key that was search appears in the title
             if (productTitle.search(searchKey) >= 0) {
+              resultsCount++
               // console.log(index, "mpapaResults", db[index]);
               setResults((results) => [...results, db[index]]);
             }
           }
         });
+        console.log("!!count!!",resultsCount);
+        console.log("ceil", Math.ceil(resultsCount/maxResultsPerPage));
+        setResultPages(Math.ceil(resultsCount/maxResultsPerPage))
+        
       },
     });
   };
+
+  const WhatPage=(PageNum)=>{
+    setCurrentPage(PageNum)
+    console.log("PageNum * maxResultsPerPage ",currentPage, maxResultsPerPage, currentPage * maxResultsPerPage );
+  }
 
   return (
     <div className="App">
@@ -82,7 +98,14 @@ function App() {
         isAutocomplete={isAutocomplete}
         searchTitles={searchTitles}
       />
-      <ShowResults results={results} checkImage={checkImage} />
+      <ShowResults results={results.slice(((currentPage * maxResultsPerPage )-maxResultsPerPage),(currentPage * maxResultsPerPage ))} checkImage={checkImage} resultPages={resultPages}/>
+       <div className="paging"> {resultPages>1 && [...Array(resultPages)].map((e, i) =><p key={i} 
+       onClick={() =>WhatPage(i+1)}
+       style={
+        currentPage===i+1
+          ? { color: "rgb(161, 9, 161)" }
+          : { color: "black" }
+      }>Page {i+1 } </p> )}   </div>
     </div>
   );
 }

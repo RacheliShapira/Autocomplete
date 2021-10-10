@@ -10,12 +10,12 @@
   width: 500px;
   height: 20px;
 
-  border: 3px solid gray;
+  border: 3px solid purple;
 }
 .autoCompleteOptions {
   width: 504px;
   max-height: 170px;
-  border: 3px solid gray;
+  border: 3px solid purple;
   overflow-y: scroll;
   line-height: 5px;
   white-space: nowrap;
@@ -24,7 +24,7 @@
 .searchBar button {
   width: 70px;
   height: 50px;
-  background-color: blueviolet;
+  background-color: rgb(161, 9, 161);
   position: absolute;
   top: 50px;
   left: 550px;
@@ -36,11 +36,20 @@
   padding: 3px;
   /* border: 1px solid gray; */
 }
+.paging{
+  
+  display: flex;
+  justify-content: center;
+}
+.paging p{
+  padding-right: 30px;
+  cursor: pointer;
+}
 .resultCard {
   font-family: Georgia, serif;
   background-color: white;
   width: 25%;
-  border: 5px solid rgb(77, 12, 12);
+  border: 5px solid purple;
   margin: 3px;
   padding: 3px;
 }
