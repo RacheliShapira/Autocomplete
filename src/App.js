@@ -56,7 +56,8 @@ function App() {
 
   const submitButton = () => {
     console.log("submitted", searchKey);
-    //reset isAutocomplete
+    //reset old search
+    setCurrentPage(1)
     setIsAutocomplete(false);
     setResults([]); //emptying  the results array for the new search
     Papa.parse(xlsxFile, {
@@ -77,6 +78,7 @@ function App() {
             }
           }
         });
+        console.log("currentPage",currentPage,"maxResultsPerPage", maxResultsPerPage,"PageNum * maxResultsPerPage ", currentPage * maxResultsPerPage );
         console.log("!!count!!",resultsCount);
         console.log("ceil", Math.ceil(resultsCount/maxResultsPerPage));
         setResultPages(Math.ceil(resultsCount/maxResultsPerPage))
@@ -87,7 +89,7 @@ function App() {
 
   const WhatPage=(PageNum)=>{
     setCurrentPage(PageNum)
-    console.log("PageNum * maxResultsPerPage ",currentPage, maxResultsPerPage, currentPage * maxResultsPerPage );
+
   }
 
   return (
