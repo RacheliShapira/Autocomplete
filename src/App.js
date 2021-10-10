@@ -100,6 +100,11 @@ function App() {
         isAutocomplete={isAutocomplete}
         searchTitles={searchTitles}
       />
+      <div className="showResults">
+      {results.length===0? <p>No products found, Please search something else</p>:<p>Found {results.length} products for you</p> }
+      
+      </div>
+      
       <ShowResults results={results.slice(((currentPage * maxResultsPerPage )-maxResultsPerPage),(currentPage * maxResultsPerPage ))} checkImage={checkImage} resultPages={resultPages}/>
        <div className="paging"> {resultPages>1 && [...Array(resultPages)].map((e, i) =><p key={i} 
        onClick={() =>WhatPage(i+1)}

@@ -4,8 +4,8 @@ import ResultCard from "./ResultCard.js";
 const ShowResults = ({ results, checkImage , resultPages}) => {
   return (
     <div>
-      
   <div className="showResults">
+
       {results.map((result, index) => (
         <div className="resultCard" key={index}>
           <ResultCard
