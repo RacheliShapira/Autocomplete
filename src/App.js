@@ -13,12 +13,10 @@ function App() {
   const [searchTitles, setSearchTitles] = useState([]);
   const [results, setResults] = useState([]);
   const [resultPages, setResultPages] = useState(0);
-  const maxResultsPerPage=100;
+  const maxResultsPerPage = 100;
   const [currentPage, setCurrentPage] = useState(1);
-  
 
   const searchOptions = (e) => {
-    console.log(" e.target.value", e.target.value);
     //reset isAutocomplete
     setIsAutocomplete(false);
     setSearchTitles([]);
@@ -55,42 +53,35 @@ function App() {
   };
 
   const submitButton = () => {
-    console.log("submitted", searchKey);
     //reset old search
-    setCurrentPage(1)
+    setCurrentPage(1);
     setIsAutocomplete(false);
     setResults([]); //emptying  the results array for the new search
     Papa.parse(xlsxFile, {
       download: true,
       complete: function (papaResults) {
         const db = papaResults.data;
-        let resultsCount=0
+        let resultsCount = 0;
         db.map((x, index) => {
           //filtering  the headers from results
           if (index > 0) {
-            
             var productTitle = db[index][0].toLowerCase();
             //if the key that was search appears in the title
             if (productTitle.search(searchKey) >= 0) {
-              resultsCount++
-              // console.log(index, "mpapaResults", db[index]);
+              resultsCount++;
               setResults((results) => [...results, db[index]]);
             }
           }
         });
-        console.log("currentPage",currentPage,"maxResultsPerPage", maxResultsPerPage,"PageNum * maxResultsPerPage ", currentPage * maxResultsPerPage );
-        console.log("!!count!!",resultsCount);
-        console.log("ceil", Math.ceil(resultsCount/maxResultsPerPage));
-        setResultPages(Math.ceil(resultsCount/maxResultsPerPage))
-        
+
+        setResultPages(Math.ceil(resultsCount / maxResultsPerPage));
       },
     });
   };
 
-  const WhatPage=(PageNum)=>{
-    setCurrentPage(PageNum)
-
-  }
+  const WhatPage = (PageNum) => {
+    setCurrentPage(PageNum);
+  };
 
   return (
     <div className="App">
@@ -101,18 +92,38 @@ function App() {
         searchTitles={searchTitles}
       />
       <div className="showResults">
-      {results.length===0? <p>No products found, Please search something else</p>:<p>Found {results.length} products for you</p> }
-      
+        {results.length === 0 ? (
+          <p>No products found, Please search something else</p>
+        ) : (
+          <p>Found {results.length} products for you</p>
+        )}
       </div>
-      
-      <ShowResults results={results.slice(((currentPage * maxResultsPerPage )-maxResultsPerPage),(currentPage * maxResultsPerPage ))} checkImage={checkImage} resultPages={resultPages}/>
-       <div className="paging"> {resultPages>1 && [...Array(resultPages)].map((e, i) =><p key={i} 
-       onClick={() =>WhatPage(i+1)}
-       style={
-        currentPage===i+1
-          ? { color: "rgb(161, 9, 161)" }
-          : { color: "black" }
-      }>Page {i+1 } </p> )}   </div>
+
+      <ShowResults
+        results={results.slice(
+          currentPage * maxResultsPerPage - maxResultsPerPage,
+          currentPage * maxResultsPerPage
+        )}
+        checkImage={checkImage}
+        resultPages={resultPages}
+      />
+      <div className="paging">
+        {" "}
+        {resultPages > 1 &&
+          [...Array(resultPages)].map((e, i) => (
+            <p
+              key={i}
+              onClick={() => WhatPage(i + 1)}
+              style={
+                currentPage === i + 1
+                  ? { color: "rgb(161, 9, 161)" }
+                  : { color: "black" }
+              }
+            >
+              Page {i + 1}{" "}
+            </p>
+          ))}{" "}
+      </div>
     </div>
   );
 }

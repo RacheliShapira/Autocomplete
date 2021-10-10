@@ -22,8 +22,10 @@ const ResultCard = (props) => {
           >
             {props.price}
           </p>
-          <p style={{ color: "brown" }}>{isSale ? "SALE!  " + props.sale_price : props.price}</p>
-         
+          <p style={{ color: "brown" }}>
+            {isSale ? "SALE!  " + props.sale_price : props.price}
+          </p>
+
           <p style={{ fontSize: "small" }}> {props.gender}</p>
           <p className="sNumber"> {props.gtin}</p>
         </div>
